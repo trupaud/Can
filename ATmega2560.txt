@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include "pico/stdlib.h"
+
+int main() {
+  stdio_init_all();
+  while (true) {
+    printf("Hello, Wokwi!\n");
+    sleep_ms(250);
+  }
+}
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
+#define TIEMPO_A 250   
+#define TIEMPO_B 60000 
+void configurarTimer5() {
+    TCCR5B |= (1 << WGM52);
+    TCCR5B |= (1 << CS52);
+    OCR5A = (TIEMPO_A * 12000) / 256 - 1;
+    OCR5B = (TIEMPO_B * 12000) / 256 - 1;
+    TIMSK5 |= (1 << OCIE5A) | (1 << OCIE5B);
+}
+void inicializar() {
+    configurarTimer5();
+    sei();
+}
+
+int main() {
+    inicializar();
+
+    while (1) {
+    }
+
+    return 0;
+}
+ISR(TIMER5_COMPA_vect) {
+}
+ISR(TIMER5_COMPB_vect) {
+}

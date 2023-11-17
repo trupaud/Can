@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include "pico/stdlib.h"
+
+int GPIO6 = 6;
+int GPIO7 = 7;
+int GPIO8 = 8;
+int GPIO9 = 9;
+
+int main() {
+  pinMode(GPIO6, OUTPUT);
+  pinMode(GPIO7, OUTPUT);
+  pinMode(GPIO8, OUTPUT);
+  pinMode(GPIO9, OUTPUT);
+}
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#define TIEMPO_A 1  
+#define TIEMPO_B 10000 
+void configurarTimer1() {
+    TCCR1B |= (1 << WGM12);
+    TCCR1B |= (1 << CS11) | (1 << CS10);os
+    OCR1A = (TIEMPO_A * 16000) / 64 - 1;
+    OCR1B = (TIEMPO_B * 16000) / 64 - 1;
+    TIMSK1 |= (1 << OCIE1A) | (1 << OCIE1B);
+}
+void inicializar() {
+    configurarTimer1();
+    sei();
+}
+
+int main() {
+    inicializar();
+
+    while (1) {
+    }
+
+    return 0;
+}
+ISR(TIMER1_COMPA_vect) {
+}
+ISR(TIMER1_COMPB_vect) {
+}
